@@ -19,23 +19,19 @@ void ClientHandler(TcpClient *obj)
 	if (obj == nullptr)
 		return;
 
-
 	char msg[1024] = { 0 };
 
 	int bytes_recv = 0;
 
 	while (true)
-	{
-		
+	{		
 		bytes_recv = recv(obj->m_hClientSocket, &msg[0], sizeof(msg), 0);
 		if (bytes_recv == SOCKET_ERROR)
 			break;
 
 		std::string cBuff = msg;
 		obj->OnReceive(cBuff);
-
 	}
-
 	obj->m_hClientSocket = INVALID_SOCKET;
 }
 
@@ -107,12 +103,7 @@ bool TcpClient::ConnetToIp(const std::string &ip, int port)
 	CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ClientHandler, this, NULL, NULL);
 
 }
-void TcpClient::ConnectToHandle(SOCKET ClientSocket)
-{
-	m_hClientSocket = ClientSocket;
 
-	CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ClientHandler, this, NULL, NULL);
-}
 
 
 void TcpClient::OnReceive(const std::string &data)
